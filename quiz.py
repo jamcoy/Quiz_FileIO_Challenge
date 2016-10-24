@@ -20,6 +20,7 @@ def write_questions():
             save_questions(user_file, zip(new_questions, new_answers))
             break
         else:
+            user_question += "\n"
             user_answer = raw_input("Enter answer: ") + "\n"
             new_questions.append(user_question)
             new_answers.append(user_answer)
