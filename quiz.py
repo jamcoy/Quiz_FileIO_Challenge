@@ -1,5 +1,7 @@
 import sys
+import difflib
 GUESSES = 3
+ACCEPTABLE_DELTA = 0.9
 
 
 def play_or_write():
@@ -43,6 +45,12 @@ def get_questions():
     return [(lines[i], lines[i+1].strip()) for i in range(0, len(lines), 2)]
 
 
+def delta(q, a):
+    s = difflib.SequenceMatcher(None, q, a)
+    similarity = round(s.ratio(), 3)
+    return similarity
+
+
 def play_quiz():
     try:
         questions = get_questions()
@@ -59,9 +67,19 @@ def play_quiz():
         while i <= GUESSES:
             guess = raw_input("Guess " + str(i) + " of " + str(GUESSES) + ": " + question)
             i += 1
+            guess = guess.lower()
+            answer = answer.lower()
+            difference = delta(guess, answer)
             if guess == answer:
+                print "Spot on!"
                 score += 1
                 break
+            elif difference >= ACCEPTABLE_DELTA:
+                print "Near enough."
+                score += 1
+                break
+            else:
+                print "Wrong. (Similarity ratio: " + str(difference) + " )"
     print 'You got %s out of %s questions right' % (score, total)
 
 choice = ""
