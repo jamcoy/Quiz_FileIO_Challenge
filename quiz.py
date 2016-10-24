@@ -8,7 +8,31 @@ def play_or_write():
 
 
 def write_questions():
-    return 0
+    user_question = ""
+    count = 0
+    new_questions = []
+    new_answers = []
+    while user_question != "SAVE":
+        count += 1
+        user_question = raw_input("Enter question " + str(count) + ", or SAVE if finished: ")
+        if user_question == "SAVE":
+            user_file = raw_input("Enter filename of new questions file: ")
+            save_questions(user_file, zip(new_questions, new_answers))
+            break
+        else:
+            user_answer = raw_input("Enter answer: ") + "\n"
+            new_questions.append(user_question)
+            new_answers.append(user_answer)
+    return
+
+
+def save_questions(filename, quiz):
+    f = open(filename, 'w')
+    for item in quiz:
+        f.write(item[0])
+        f.write(item[1])
+    f.close()
+    return
 
 
 def get_questions():
